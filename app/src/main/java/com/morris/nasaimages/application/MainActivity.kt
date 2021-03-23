@@ -25,4 +25,9 @@ class MainActivity : AppCompatActivity() {
 
         return navController.navigateUp()
     }
+
+    companion object {
+
+        val retrofitClient = RetrofitClient.retrofitApodInstance()
+    }
 }

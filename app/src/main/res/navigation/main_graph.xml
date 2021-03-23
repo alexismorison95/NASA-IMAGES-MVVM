@@ -15,12 +15,25 @@
             app:destination="@id/apodFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_right"
-            app:popExitAnim="@anim/slide_out_left" />
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/apodFragment"
         android:name="com.morris.nasaimages.ui.apod.ApodFragment"
         android:label="APOD"
-        tools:layout="@layout/fragment_apod" />
+        tools:layout="@layout/fragment_apod" >
+        <action
+            android:id="@+id/action_apodFragment_to_apodDetailFragment"
+            app:destination="@id/apodDetailFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/apodDetailFragment"
+        android:name="com.morris.nasaimages.ui.apod.ApodDetailFragment"
+        android:label="APOD"
+        tools:layout="@layout/fragment_apod_detail" />
 </navigation>

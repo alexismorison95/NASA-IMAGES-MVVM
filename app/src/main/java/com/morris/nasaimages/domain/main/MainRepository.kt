@@ -2,7 +2,7 @@ package com.morris.nasaimages.domain.main
 
 import com.morris.nasaimages.core.Resource
 import com.morris.nasaimages.data.local.main.MainDataSource
-import com.morris.nasaimages.data.model.MainItem
+import com.morris.nasaimages.data.model.main.MainItem
 
 class MainRepository(private val dataSource: MainDataSource) : IMainRepository {
 

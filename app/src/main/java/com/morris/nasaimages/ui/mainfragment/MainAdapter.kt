@@ -8,8 +8,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.morris.nasaimages.R
 import com.morris.nasaimages.core.BaseViewHolder
-import com.morris.nasaimages.data.model.MainItem
-import com.morris.nasaimages.databinding.FragmentMainBinding
+import com.morris.nasaimages.data.model.main.MainItem
 import com.morris.nasaimages.databinding.MainCardBinding
 import com.squareup.picasso.Picasso
 
@@ -58,7 +57,7 @@ class MainAdapter(
 
             // Get Image
             Picasso.get()
-                .load(R.drawable.apod)
+                .load(item.image)
                 .into(image)
 
             title.text = item.title
