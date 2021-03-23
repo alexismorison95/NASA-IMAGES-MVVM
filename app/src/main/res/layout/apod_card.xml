@@ -61,20 +61,29 @@
                 android:textAppearance="?attr/textAppearanceBody2"
                 android:textColor="?android:attr/textColorSecondary"/>
 
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginHorizontal="8dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="-10dp"
+            android:gravity="center_vertical">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnSetWallpaper"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Set as Wallpaper"
+                style="?attr/borderlessButtonStyle" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginTop="10dp"
-                android:gravity="center_vertical">
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnSetWallpaper"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    android:text="Set as Wallpaper"
-                    style="?attr/borderlessButtonStyle" />
+                android:gravity="end">
 
                 <ImageButton
                     android:id="@+id/addToFavs"

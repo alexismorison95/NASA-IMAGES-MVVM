@@ -2,16 +2,12 @@ package com.morris.nasaimages.ui.apod
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.morris.nasaimages.R
-import com.morris.nasaimages.application.AppConstants.API_KEY
 import com.morris.nasaimages.application.MainActivity
 import com.morris.nasaimages.application.RetrofitClient
 import com.morris.nasaimages.core.Resource
@@ -19,11 +15,8 @@ import com.morris.nasaimages.data.model.apod.Apod
 import com.morris.nasaimages.data.remote.apod.ApodDataSource
 import com.morris.nasaimages.databinding.FragmentApodBinding
 import com.morris.nasaimages.domain.apod.ApodRepository
-import com.morris.nasaimages.presentation.ApodViewModel
-import com.morris.nasaimages.presentation.ApodViewModelFactory
-import com.morris.nasaimages.ui.mainfragment.MainAdapter
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
+import com.morris.nasaimages.presentation.apod.ApodViewModel
+import com.morris.nasaimages.presentation.apod.ApodViewModelFactory
 
 class ApodFragment : Fragment(R.layout.fragment_apod), ApodAdapter.OnApodClickListener {
 
@@ -47,7 +40,7 @@ class ApodFragment : Fragment(R.layout.fragment_apod), ApodAdapter.OnApodClickLi
 
     private fun setObservers() {
 
-        if (viewModel.getApodData() == null) {
+        if (viewModel.getApodData().isEmpty()) {
 
             viewModel.loadApod().observe(viewLifecycleOwner, { result ->
 
@@ -72,7 +65,7 @@ class ApodFragment : Fragment(R.layout.fragment_apod), ApodAdapter.OnApodClickLi
         }
         else {
 
-            binding.recyclerView.adapter = ApodAdapter(requireContext(), viewModel.getApodData()!!, this)
+            binding.recyclerView.adapter = ApodAdapter(requireContext(), viewModel.getApodData(), this)
         }
     }
 

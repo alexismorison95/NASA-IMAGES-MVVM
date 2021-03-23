@@ -17,6 +17,13 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_mainFragment_to_favouritesFragment"
+            app:destination="@id/favouritesFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/apodFragment"
@@ -36,4 +43,9 @@
         android:name="com.morris.nasaimages.ui.apod.ApodDetailFragment"
         android:label="APOD"
         tools:layout="@layout/fragment_apod_detail" />
+    <fragment
+        android:id="@+id/favouritesFragment"
+        android:name="com.morris.nasaimages.ui.favourites.FavouritesFragment"
+        android:label="Favourites"
+        tools:layout="@layout/fragment_favourites" />
 </navigation>

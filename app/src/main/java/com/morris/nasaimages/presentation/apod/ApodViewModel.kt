@@ -1,4 +1,4 @@
-package com.morris.nasaimages.presentation
+package com.morris.nasaimages.presentation.apod
 
 import android.util.Log
 import androidx.lifecycle.*
@@ -13,9 +13,7 @@ import java.time.format.DateTimeFormatter
 
 class ApodViewModel(private val repository: ApodRepository) : ViewModel() {
 
-    private val apodData: MutableLiveData<List<Apod>> by lazy {
-        MutableLiveData<List<Apod>>()
-    }
+    private var apodData: List<Apod> = mutableListOf()
 
     private val current = LocalDateTime.now()
     private val last = current.minusDays(15)
@@ -27,10 +25,10 @@ class ApodViewModel(private val repository: ApodRepository) : ViewModel() {
 
     fun setApodData(list: List<Apod>) {
 
-        apodData.value = list
+        apodData = list
     }
 
-    fun getApodData(): List<Apod>? = apodData.value
+    fun getApodData(): List<Apod> = apodData
 
 
     fun loadApod() = liveData<Resource<List<Apod>>>(Dispatchers.IO) {

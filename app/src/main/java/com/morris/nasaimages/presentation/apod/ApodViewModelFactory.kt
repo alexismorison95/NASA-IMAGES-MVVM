@@ -1,4 +1,4 @@
-package com.morris.nasaimages.presentation
+package com.morris.nasaimages.presentation.apod
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
