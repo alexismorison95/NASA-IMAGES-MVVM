@@ -8,10 +8,8 @@ import com.morris.nasaimages.data.model.apod.Apod
 
 @Entity(tableName = "favourites")
 data class FavouriteEntity(
-    @PrimaryKey(autoGenerate = true)
-    val id: Int? = null,
 
-    @ColumnInfo(name = "title")
+    @PrimaryKey
     val title: String = "",
 
     @ColumnInfo(name = "url")
@@ -23,7 +21,6 @@ data class FavouriteEntity(
 
 
 data class Favourite(
-    val id: Int? = null,
     val title: String = "",
     val url: String = "",
     val hdurl: String? = null,
@@ -34,7 +31,11 @@ fun Apod.asFavourite(): Favourite =
     Favourite(title = this.title, url = this.url, hdurl = this.hdurl)
 
 fun FavouriteEntity.asFavourite(): Favourite =
-    Favourite(id = this.id, title = this.title, url = this.url, hdurl = this.hdurl)
+    Favourite(title = this.title, url = this.url, hdurl = this.hdurl)
 
 fun Favourite.asFavouriteEntity(): FavouriteEntity =
     FavouriteEntity(title = this.title, url = this.url, hdurl = this.hdurl)
+
+fun List<FavouriteEntity>.asFavouriteList(): List<Favourite> = this.map {
+    Favourite(it.title, it.url, it.hdurl)
+}

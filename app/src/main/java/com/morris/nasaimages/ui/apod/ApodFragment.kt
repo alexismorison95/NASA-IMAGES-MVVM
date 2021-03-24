@@ -47,16 +47,19 @@ class ApodFragment : Fragment(R.layout.fragment_apod), ApodAdapter.OnApodClickLi
                 when (result) {
 
                     is Resource.Loading -> {
+
                         binding.recyclerView.adapter = null
                         binding.progressBar.visibility = View.VISIBLE
                     }
                     is Resource.Success -> {
+
                         binding.progressBar.visibility = View.GONE
                         binding.recyclerView.adapter = ApodAdapter(requireContext(), result.data, this)
 
                         viewModel.setApodData(result.data)
                     }
                     is Resource.Failure -> {
+
                         binding.progressBar.visibility = View.GONE
                         Toast.makeText(requireContext(), "Error: ${result.exception}", Toast.LENGTH_SHORT).show()
                     }
@@ -64,7 +67,6 @@ class ApodFragment : Fragment(R.layout.fragment_apod), ApodAdapter.OnApodClickLi
             })
         }
         else {
-
             binding.recyclerView.adapter = ApodAdapter(requireContext(), viewModel.getApodData(), this)
         }
     }
@@ -72,6 +74,21 @@ class ApodFragment : Fragment(R.layout.fragment_apod), ApodAdapter.OnApodClickLi
     private fun setRecyclerView() {
 
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
+    }
+
+    override fun onFavClick(item: Apod) {
+
+        Toast.makeText(requireContext(), "Click in fav", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onShareClick(item: Apod) {
+
+        Toast.makeText(requireContext(), "Click in share", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onSetWallpaperClick(item: Apod) {
+
+        Toast.makeText(requireContext(), "Click in set wallpaper", Toast.LENGTH_SHORT).show()
     }
 
     override fun onApodClick(item: Apod, position: Int) {

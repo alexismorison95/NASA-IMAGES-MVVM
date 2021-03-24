@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import com.morris.nasaimages.application.AppConstants.DATABASE_NAME
 import com.morris.nasaimages.data.model.database.FavouriteEntity
 
-@Database(entities = [FavouriteEntity::class], version = 1)
+@Database(entities = [FavouriteEntity::class], version = 2)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun favouriteDao(): FavouriteDao

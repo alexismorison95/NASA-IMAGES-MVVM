@@ -21,6 +21,9 @@ class ApodAdapter(
     interface OnApodClickListener {
 
         fun onApodClick(item: Apod, position: Int)
+        fun onFavClick(item: Apod)
+        fun onShareClick(item: Apod)
+        fun onSetWallpaperClick(item: Apod)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<*> {
@@ -39,6 +42,7 @@ class ApodAdapter(
 
     override fun getItemCount(): Int = list.size
 
+
     inner class ApodViewHolder(private val binding: ApodCardBinding) : BaseViewHolder<Apod>(binding.root) {
 
         override fun bind(item: Apod, position: Int) = with(binding) {
@@ -53,8 +57,22 @@ class ApodAdapter(
 
             // Click in card
             binding.root.setOnClickListener {
-
                 itemClickListener.onApodClick(item, position)
+            }
+
+            // Click on btn Add to Favs
+            binding.addToFavs.setOnClickListener {
+                itemClickListener.onFavClick(item)
+            }
+
+            // Click on share btn
+            binding.share.setOnClickListener {
+                itemClickListener.onShareClick(item)
+            }
+
+            // Click on set wallpaper btn
+            binding.btnSetWallpaper.setOnClickListener {
+                itemClickListener.onSetWallpaperClick(item)
             }
         }
     }

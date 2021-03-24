@@ -95,7 +95,7 @@
                 android:id="@+id/btnSetWallpaper"
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
-                android:text="Set wallpaper"
+                android:text="Set as wallpaper"
                 android:layout_marginVertical="20dp"
                 app:cornerRadius="8dp"
                 style="@style/Widget.MaterialComponents.Button.Icon"/>
