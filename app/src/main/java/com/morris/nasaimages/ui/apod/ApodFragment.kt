@@ -48,36 +48,21 @@ class ApodFragment : Fragment(R.layout.fragment_apod), ApodAdapter.OnApodClickLi
 
     private fun setObservers() {
 
-        viewModel.loadApod().observe(viewLifecycleOwner, { result ->
+        viewModel.isLoadig.observe(viewLifecycleOwner, {
 
-            when (result) {
+            val visibility = if (it) View.VISIBLE else View.GONE
 
-                is Resource.Loading -> {
+            binding.progressBar.visibility = visibility
+        })
 
-                    binding.recyclerView.adapter = null
-                    binding.progressBar.visibility = View.VISIBLE
-                }
-                is Resource.Success -> {
+        viewModel.apodData.observe(viewLifecycleOwner, {
 
-                    if (result.data.isNotEmpty()) {
-                        binding.progressBar.visibility = View.GONE
-                        binding.recyclerView.adapter = ApodAdapter(requireContext(), result.data, this)
-                    }
+            binding.recyclerView.adapter = ApodAdapter(requireContext(), it, this)
+        })
 
+        viewModel.onMessageError.observe(viewLifecycleOwner, {
 
-                    //viewModel.setApodData(result.data)
-                }
-                is Resource.Failure -> {
-
-                    binding.progressBar.visibility = View.GONE
-
-                    Toast.makeText(
-                        requireContext(),
-                        "Error: ${result.exception}",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            }
+            Toast.makeText(requireContext(), "Error: $it", Toast.LENGTH_SHORT).show()
         })
     }
 

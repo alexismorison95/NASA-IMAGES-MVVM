@@ -8,7 +8,7 @@ import com.morris.nasaimages.data.model.apod.ApodEntity
 interface ApodDao {
 
     @Query("SELECT * FROM apod")
-    fun getApod(): List<ApodEntity>
+    suspend fun getApod(): List<ApodEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun saveApod(apod: ApodEntity)

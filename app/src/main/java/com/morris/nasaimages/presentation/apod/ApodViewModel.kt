@@ -16,7 +16,15 @@ import java.time.format.DateTimeFormatter
 @ExperimentalCoroutinesApi
 class ApodViewModel(private val repository: ApodRepository) : ViewModel() {
 
-    private var apodData: List<Apod> = mutableListOf()
+    private val _apodData = MutableLiveData<List<Apod>>().apply { value = listOf() }
+    val apodData: LiveData<List<Apod>> = _apodData
+
+    private val _isLoadig = MutableLiveData<Boolean>()
+    val isLoadig: LiveData<Boolean> = _isLoadig
+
+    private val _onMessageError = MutableLiveData<String>()
+    val onMessageError: LiveData<String> = _onMessageError
+
 
     private val current = LocalDateTime.now()
     private val last = current.minusDays(15)
@@ -26,38 +34,37 @@ class ApodViewModel(private val repository: ApodRepository) : ViewModel() {
     private val startDate = last.format(formatter)
 
 
-    fun setApodData(list: List<Apod>) {
+    init {
+        _isLoadig.value = true
 
-        apodData = list
+        loadApod()
     }
 
-    fun getApodData(): List<Apod> = apodData
+    private fun loadApod() {
 
+        viewModelScope.launch {
 
-    /*fun loadApod() =
-        liveData<Resource<List<Apod>>>(viewModelScope.coroutineContext + Dispatchers.IO) {
+            repository.getApod(startDate, endDate, API_KEY).collect {
 
-        emit(Resource.Loading())
+                when (it) {
+                    is Resource.Loading -> {
+                        _isLoadig.value = true
+                    }
+                    is Resource.Failure -> {
 
-        try {
-            emitSource(repository.getApod(startDate, endDate, API_KEY).map { Resource.Success(it) })
-        } catch (e: Exception) {
-            emit(Resource.Failure(e))
-        }
-    }*/
+                        _isLoadig.value = false
+                        _onMessageError.value = it.exception.message.toString()
+                    }
+                    is Resource.Success -> {
 
-    fun loadApod() =
-        liveData<Resource<List<Apod>>>(viewModelScope.coroutineContext + Dispatchers.IO) {
+                        Log.d("TAG", "${it.data}")
 
-            emit(Resource.Loading())
-
-            try {
-                //emitSource(repository.getApod(startDate, endDate, API_KEY).map { Resource.Success(it) })
-                repository.getApod(startDate, endDate, API_KEY).collect {
-                    emit(it)
+                        if (it.data.isNotEmpty()) _isLoadig.value = false
+                        _apodData.value = it.data
+                    }
                 }
-            } catch (e: Exception) {
-                emit(Resource.Failure(e))
             }
         }
+
+    }
 }

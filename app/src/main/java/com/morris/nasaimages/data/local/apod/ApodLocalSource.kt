@@ -10,9 +10,8 @@ import com.morris.nasaimages.data.model.apod.asApodList
 
 class ApodLocalSource(private val appDatabase: AppDatabase) {
 
-    fun getApod(): Resource<List<Apod>> {
+    suspend fun getApod(): Resource<List<Apod>> {
 
-        //return appDatabase.ApodDao().getApod().map { it.asApodList() }
         return Resource.Success(appDatabase.ApodDao().getApod().asApodList())
     }
 

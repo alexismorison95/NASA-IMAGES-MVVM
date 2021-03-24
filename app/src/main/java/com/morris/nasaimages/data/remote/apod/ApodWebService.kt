@@ -11,5 +11,5 @@ interface ApodWebService {
         @Query(value = "start_date") startDate: String,
         @Query(value = "end_date") endDate: String,
         @Query(value = "api_key") apiKey: String,
-    ): List<Apod>
+    ): List<Apod>?
 }

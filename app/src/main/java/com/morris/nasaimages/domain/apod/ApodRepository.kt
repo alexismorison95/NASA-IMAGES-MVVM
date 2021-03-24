@@ -27,20 +27,13 @@ class ApodRepository(
 
             remoteSource.getApod(startDate, endDate, apiKey).collect {
 
-                for (apod in it.data) {
+                when (it) {
 
-                    if (apod.media_type == "image") localSource.saveApod(apod.asApodEntity())
-                }
-
-                offer(localSource.getApod())
-
-                /*when (it) {
-
-                    is Resource.Loading -> {}
                     is Resource.Success -> {
 
-                        for (apod in it.data) {
+                        localSource.clearTable()
 
+                        for (apod in it.data) {
                             if (apod.media_type == "image") localSource.saveApod(apod.asApodEntity())
                         }
 
@@ -48,52 +41,12 @@ class ApodRepository(
                     }
                     is Resource.Failure -> {
 
+                        offer(it)
                         offer(localSource.getApod())
                     }
-                }*/
+                   is Resource.Loading -> {}
+                }
             }
             awaitClose { close() }
         }
-
-        //refreshApod(startDate, endDate, apiKey)
-
-        //return remoteSource.getApod(startDate, endDate, apiKey)
-        //return localSource.getApod()
-
-        /*val response = remoteSource.getApod(startDate, endDate, apiKey)
-
-        if (response is Resource.Success) {
-
-            for (apod in response.data) {
-                localSource.saveApod(apod.asApodEntity())
-            }
-        }
-
-        return localSource.getApod()*/
-
-
-    /*private suspend fun refreshApod(startDate: String, endDate: String, apiKey: String) {
-
-        val response = remoteSource.getApod(startDate, endDate, apiKey)
-
-        when (response) {
-            is Resource.Loading -> {
-
-                localSource.getApod()
-            }
-            is Resource.Success -> {
-
-                *//*for (apod in response.data) {
-                    localSource.saveApod(apod.asApodEntity())
-                }*//*
-
-                //localSource.getApod()
-            }
-            is Resource.Failure -> {
-
-                Log.d("repo", "refreshApod: ${response.exception}")
-                localSource.getApod()
-            }
-        }
-    }*/
 }
