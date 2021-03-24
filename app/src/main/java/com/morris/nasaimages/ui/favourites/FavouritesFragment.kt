@@ -1,25 +1,20 @@
 package com.morris.nasaimages.ui.favourites
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.morris.nasaimages.R
 import com.morris.nasaimages.core.Resource
-import com.morris.nasaimages.data.local.database.AppDatabase
-import com.morris.nasaimages.data.local.database.FavouriteDataSource
-import com.morris.nasaimages.data.model.database.Favourite
+import com.morris.nasaimages.data.local.AppDatabase
+import com.morris.nasaimages.data.local.favourites.FavouriteDataSource
+import com.morris.nasaimages.data.model.favourites.Favourite
 import com.morris.nasaimages.databinding.FragmentFavouritesBinding
-import com.morris.nasaimages.domain.database.FavouriteRepository
+import com.morris.nasaimages.domain.favourites.FavouriteRepository
 import com.morris.nasaimages.presentation.favourites.FavouritesViewModel
 import com.morris.nasaimages.presentation.favourites.FavouritesViewModelFactory
-import com.morris.nasaimages.ui.apod.ApodAdapter
 
 class FavouritesFragment : Fragment(R.layout.fragment_favourites), FavouritesAdapter.OnFavouriteClickListener {
 
@@ -53,21 +48,18 @@ class FavouritesFragment : Fragment(R.layout.fragment_favourites), FavouritesAda
 
     private fun setObservers() {
 
-        viewModel.loadFavourites().observe(viewLifecycleOwner, { result ->
+        viewModel.loadFavouritesLiveData().observe(viewLifecycleOwner, { result ->
 
             when (result) {
 
                 is Resource.Loading -> {
 
-                    binding.recyclerView.adapter = null
                     binding.progressBar.visibility = View.VISIBLE
                 }
                 is Resource.Success -> {
 
                     binding.progressBar.visibility = View.GONE
                     favouriteAdapter.setList(result.data)
-
-                    binding.recyclerView.adapter = favouriteAdapter
                 }
                 is Resource.Failure -> {
 
@@ -81,6 +73,7 @@ class FavouritesFragment : Fragment(R.layout.fragment_favourites), FavouritesAda
     private fun setRecyclerView() {
 
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        binding.recyclerView.adapter = favouriteAdapter
     }
 
     override fun onSetWallpaperClick(item: Favourite) {
@@ -91,8 +84,5 @@ class FavouritesFragment : Fragment(R.layout.fragment_favourites), FavouritesAda
     override fun onDeleteClick(item: Favourite, position: Int) {
 
         viewModel.deleteFavourite(item)
-
-        val list = favouriteAdapter.getList().toMutableList().apply { removeAt(position) }
-        favouriteAdapter.setList(list)
     }
 }

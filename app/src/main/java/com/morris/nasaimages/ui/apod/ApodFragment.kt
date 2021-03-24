@@ -1,6 +1,7 @@
 package com.morris.nasaimages.ui.apod
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.View
 import android.widget.Toast
@@ -11,20 +12,27 @@ import com.morris.nasaimages.R
 import com.morris.nasaimages.application.MainActivity
 import com.morris.nasaimages.application.RetrofitClient
 import com.morris.nasaimages.core.Resource
+import com.morris.nasaimages.data.local.AppDatabase
+import com.morris.nasaimages.data.local.apod.ApodLocalSource
 import com.morris.nasaimages.data.model.apod.Apod
-import com.morris.nasaimages.data.remote.apod.ApodDataSource
+import com.morris.nasaimages.data.remote.apod.ApodRemoteSource
 import com.morris.nasaimages.databinding.FragmentApodBinding
 import com.morris.nasaimages.domain.apod.ApodRepository
 import com.morris.nasaimages.presentation.apod.ApodViewModel
 import com.morris.nasaimages.presentation.apod.ApodViewModelFactory
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@ExperimentalCoroutinesApi
 class ApodFragment : Fragment(R.layout.fragment_apod), ApodAdapter.OnApodClickListener {
 
     private lateinit var binding: FragmentApodBinding
 
     private val viewModel by activityViewModels<ApodViewModel> {
         ApodViewModelFactory(
-            ApodRepository(ApodDataSource(RetrofitClient.apodWebService(MainActivity.retrofitClient)))
+            ApodRepository(
+                ApodRemoteSource(RetrofitClient.apodWebService(MainActivity.retrofitClient)),
+                ApodLocalSource(AppDatabase.getRoomInstance(requireActivity().applicationContext))
+            )
         )
     }
 
@@ -40,35 +48,37 @@ class ApodFragment : Fragment(R.layout.fragment_apod), ApodAdapter.OnApodClickLi
 
     private fun setObservers() {
 
-        if (viewModel.getApodData().isEmpty()) {
+        viewModel.loadApod().observe(viewLifecycleOwner, { result ->
 
-            viewModel.loadApod().observe(viewLifecycleOwner, { result ->
+            when (result) {
 
-                when (result) {
+                is Resource.Loading -> {
 
-                    is Resource.Loading -> {
+                    binding.recyclerView.adapter = null
+                    binding.progressBar.visibility = View.VISIBLE
+                }
+                is Resource.Success -> {
 
-                        binding.recyclerView.adapter = null
-                        binding.progressBar.visibility = View.VISIBLE
-                    }
-                    is Resource.Success -> {
-
+                    if (result.data.isNotEmpty()) {
                         binding.progressBar.visibility = View.GONE
                         binding.recyclerView.adapter = ApodAdapter(requireContext(), result.data, this)
-
-                        viewModel.setApodData(result.data)
                     }
-                    is Resource.Failure -> {
 
-                        binding.progressBar.visibility = View.GONE
-                        Toast.makeText(requireContext(), "Error: ${result.exception}", Toast.LENGTH_SHORT).show()
-                    }
+
+                    //viewModel.setApodData(result.data)
                 }
-            })
-        }
-        else {
-            binding.recyclerView.adapter = ApodAdapter(requireContext(), viewModel.getApodData(), this)
-        }
+                is Resource.Failure -> {
+
+                    binding.progressBar.visibility = View.GONE
+
+                    Toast.makeText(
+                        requireContext(),
+                        "Error: ${result.exception}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        })
     }
 
     private fun setRecyclerView() {
@@ -96,6 +106,6 @@ class ApodFragment : Fragment(R.layout.fragment_apod), ApodAdapter.OnApodClickLi
         val bundle = Bundle()
         bundle.putParcelable("param1", item)
 
-       findNavController().navigate(R.id.action_apodFragment_to_apodDetailFragment, bundle)
+        findNavController().navigate(R.id.action_apodFragment_to_apodDetailFragment, bundle)
     }
 }

@@ -1,19 +1,18 @@
-package com.morris.nasaimages.data.local.database
+package com.morris.nasaimages.data.local.favourites
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.map
-import com.morris.nasaimages.core.Resource
-import com.morris.nasaimages.data.model.database.Favourite
-import com.morris.nasaimages.data.model.database.asFavourite
-import com.morris.nasaimages.data.model.database.asFavouriteEntity
-import com.morris.nasaimages.data.model.database.asFavouriteList
+import com.morris.nasaimages.data.local.AppDatabase
+import com.morris.nasaimages.data.model.favourites.Favourite
+import com.morris.nasaimages.data.model.favourites.asFavouriteEntity
+import com.morris.nasaimages.data.model.favourites.asFavouriteList
 
 class FavouriteDataSource(private val appDatabase: AppDatabase) {
 
-    suspend fun getFavourites(): Resource<List<Favourite>> {
+    /*suspend fun getFavourites(): Resource<List<Favourite>> {
 
         return Resource.Success(appDatabase.favouriteDao().getFavourites().map { it.asFavourite() })
-    }
+    }*/
 
     fun getFavouritesLiveData(): LiveData<List<Favourite>> {
 

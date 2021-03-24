@@ -1,16 +1,17 @@
-package com.morris.nasaimages.domain.database
+package com.morris.nasaimages.domain.favourites
 
 import androidx.lifecycle.LiveData
-import com.morris.nasaimages.core.Resource
-import com.morris.nasaimages.data.local.database.FavouriteDataSource
-import com.morris.nasaimages.data.model.database.Favourite
+import com.morris.nasaimages.data.local.favourites.FavouriteDataSource
+import com.morris.nasaimages.data.model.favourites.Favourite
 
-class FavouriteRepository(private val dataSource: FavouriteDataSource) : IFavouriteRepository {
+class FavouriteRepository(
+    private val dataSource: FavouriteDataSource,
+) : IFavouriteRepository {
 
-    override suspend fun getFavourites(): Resource<List<Favourite>> {
+    /*override suspend fun getFavourites(): Resource<List<Favourite>> {
 
         return dataSource.getFavourites()
-    }
+    }*/
 
     override fun getFavouritesLiveData(): LiveData<List<Favourite>> {
 

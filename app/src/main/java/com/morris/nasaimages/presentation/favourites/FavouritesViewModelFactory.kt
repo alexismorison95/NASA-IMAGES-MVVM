@@ -2,7 +2,7 @@ package com.morris.nasaimages.presentation.favourites
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.morris.nasaimages.domain.database.FavouriteRepository
+import com.morris.nasaimages.domain.favourites.FavouriteRepository
 
 class FavouritesViewModelFactory(private val repository: FavouriteRepository) :ViewModelProvider.Factory {
 

@@ -9,5 +9,5 @@ object AppConstants {
     const val APOD_URL = "https://api.nasa.gov/planetary/"
 
     // ROOM
-    const val DATABASE_NAME = "favourites"
+    const val DATABASE_NAME = "nasa_images"
 }

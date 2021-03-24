@@ -1,4 +1,4 @@
-package com.morris.nasaimages.data.model.database
+package com.morris.nasaimages.data.model.favourites
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

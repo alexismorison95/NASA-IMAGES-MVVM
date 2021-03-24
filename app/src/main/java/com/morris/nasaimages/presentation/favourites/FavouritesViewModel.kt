@@ -1,28 +1,17 @@
 package com.morris.nasaimages.presentation.favourites
 
-import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
 import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
 import com.morris.nasaimages.core.Resource
-import com.morris.nasaimages.data.model.database.Favourite
-import com.morris.nasaimages.domain.database.FavouriteRepository
+import com.morris.nasaimages.data.model.favourites.Favourite
+import com.morris.nasaimages.domain.favourites.FavouriteRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class FavouritesViewModel(private val repository: FavouriteRepository) : ViewModel() {
 
-    fun loadFavourites() = liveData<Resource<List<Favourite>>>(Dispatchers.IO) {
-
-        emit(Resource.Loading())
-
-        try {
-            emit(repository.getFavourites())
-        } catch (e: Exception) {
-            emit(Resource.Failure(e))
-        }
-    }
 
     fun loadFavouritesLiveData() =
         liveData<Resource<List<Favourite>>>(viewModelScope.coroutineContext + Dispatchers.IO) {

@@ -7,10 +7,13 @@ import com.morris.nasaimages.core.Resource
 import com.morris.nasaimages.data.model.apod.Apod
 import com.morris.nasaimages.domain.apod.ApodRepository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
+@ExperimentalCoroutinesApi
 class ApodViewModel(private val repository: ApodRepository) : ViewModel() {
 
     private var apodData: List<Apod> = mutableListOf()
@@ -31,14 +34,30 @@ class ApodViewModel(private val repository: ApodRepository) : ViewModel() {
     fun getApodData(): List<Apod> = apodData
 
 
-    fun loadApod() = liveData<Resource<List<Apod>>>(Dispatchers.IO) {
+    /*fun loadApod() =
+        liveData<Resource<List<Apod>>>(viewModelScope.coroutineContext + Dispatchers.IO) {
 
         emit(Resource.Loading())
 
         try {
-            emit(repository.getApod(startDate, endDate, API_KEY))
+            emitSource(repository.getApod(startDate, endDate, API_KEY).map { Resource.Success(it) })
         } catch (e: Exception) {
             emit(Resource.Failure(e))
         }
-    }
+    }*/
+
+    fun loadApod() =
+        liveData<Resource<List<Apod>>>(viewModelScope.coroutineContext + Dispatchers.IO) {
+
+            emit(Resource.Loading())
+
+            try {
+                //emitSource(repository.getApod(startDate, endDate, API_KEY).map { Resource.Success(it) })
+                repository.getApod(startDate, endDate, API_KEY).collect {
+                    emit(it)
+                }
+            } catch (e: Exception) {
+                emit(Resource.Failure(e))
+            }
+        }
 }

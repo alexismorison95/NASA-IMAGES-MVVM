@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.morris.nasaimages.core.BaseViewHolder
-import com.morris.nasaimages.data.model.database.Favourite
+import com.morris.nasaimages.data.model.favourites.Favourite
 import com.morris.nasaimages.databinding.FavouriteCardBinding
 import com.squareup.picasso.Picasso
 
