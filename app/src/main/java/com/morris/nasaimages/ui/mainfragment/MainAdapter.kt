@@ -23,6 +23,7 @@ class MainAdapter(
         fun onMainClick(item: MainItem, position: Int)
     }
 
+
     private lateinit var recyclerRoot: RecyclerView
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
@@ -30,6 +31,7 @@ class MainAdapter(
 
         recyclerRoot = recyclerView
     }
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<*> {
 

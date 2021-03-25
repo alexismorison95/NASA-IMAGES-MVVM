@@ -14,26 +14,47 @@ import com.morris.nasaimages.application.RetrofitClient
 import com.morris.nasaimages.core.Resource
 import com.morris.nasaimages.data.local.AppDatabase
 import com.morris.nasaimages.data.local.apod.ApodLocalSource
+import com.morris.nasaimages.data.local.favourites.FavouriteDataSource
 import com.morris.nasaimages.data.model.apod.Apod
+import com.morris.nasaimages.data.model.favourites.asFavourite
 import com.morris.nasaimages.data.remote.apod.ApodRemoteSource
 import com.morris.nasaimages.databinding.FragmentApodBinding
 import com.morris.nasaimages.domain.apod.ApodRepository
+import com.morris.nasaimages.domain.favourites.FavouriteRepository
 import com.morris.nasaimages.presentation.apod.ApodViewModel
 import com.morris.nasaimages.presentation.apod.ApodViewModelFactory
+import com.morris.nasaimages.presentation.favourites.FavouritesViewModel
+import com.morris.nasaimages.presentation.favourites.FavouritesViewModelFactory
+import com.morris.nasaimages.utils.Utils
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @ExperimentalCoroutinesApi
 class ApodFragment : Fragment(R.layout.fragment_apod), ApodAdapter.OnApodClickListener {
 
     private lateinit var binding: FragmentApodBinding
+    private lateinit var apodAdapter: ApodAdapter
 
     private val viewModel by activityViewModels<ApodViewModel> {
         ApodViewModelFactory(
             ApodRepository(
-                ApodRemoteSource(RetrofitClient.apodWebService(MainActivity.retrofitClient)),
+                ApodRemoteSource(RetrofitClient.apodWebService(RetrofitClient.retrofitApodInstance())),
                 ApodLocalSource(AppDatabase.getRoomInstance(requireActivity().applicationContext))
             )
         )
+    }
+
+    private val viewModelFavs by activityViewModels<FavouritesViewModel> {
+        FavouritesViewModelFactory(
+            FavouriteRepository(
+                FavouriteDataSource(AppDatabase.getRoomInstance(requireActivity().applicationContext))
+            )
+        )
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        apodAdapter = ApodAdapter(requireContext(), this)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -56,8 +77,8 @@ class ApodFragment : Fragment(R.layout.fragment_apod), ApodAdapter.OnApodClickLi
         })
 
         viewModel.apodData.observe(viewLifecycleOwner, {
-
-            binding.recyclerView.adapter = ApodAdapter(requireContext(), it, this)
+            
+            apodAdapter.setList(it)
         })
 
         viewModel.onMessageError.observe(viewLifecycleOwner, {
@@ -69,16 +90,19 @@ class ApodFragment : Fragment(R.layout.fragment_apod), ApodAdapter.OnApodClickLi
     private fun setRecyclerView() {
 
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        binding.recyclerView.adapter = apodAdapter
     }
 
-    override fun onFavClick(item: Apod) {
+    override fun onFavClick(item: Apod, view: View) {
 
-        Toast.makeText(requireContext(), "Click in fav", Toast.LENGTH_SHORT).show()
+        viewModelFavs.saveFavourite(item.asFavourite())
+
+        Utils.showSnackbar(view, "${item.title} added to favorites")
     }
 
     override fun onShareClick(item: Apod) {
 
-        Toast.makeText(requireContext(), "Click in share", Toast.LENGTH_SHORT).show()
+        Utils.shareItem(requireContext(), item.hdurl)
     }
 
     override fun onSetWallpaperClick(item: Apod) {

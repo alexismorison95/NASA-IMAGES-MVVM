@@ -15,6 +15,7 @@ import com.morris.nasaimages.databinding.FragmentFavouritesBinding
 import com.morris.nasaimages.domain.favourites.FavouriteRepository
 import com.morris.nasaimages.presentation.favourites.FavouritesViewModel
 import com.morris.nasaimages.presentation.favourites.FavouritesViewModelFactory
+import com.morris.nasaimages.utils.Utils
 
 class FavouritesFragment : Fragment(R.layout.fragment_favourites), FavouritesAdapter.OnFavouriteClickListener {
 
@@ -81,8 +82,10 @@ class FavouritesFragment : Fragment(R.layout.fragment_favourites), FavouritesAda
         Toast.makeText(requireContext(), "Click in set wallpaper", Toast.LENGTH_SHORT).show()
     }
 
-    override fun onDeleteClick(item: Favourite, position: Int) {
+    override fun onDeleteClick(item: Favourite, position: Int, view: View) {
 
         viewModel.deleteFavourite(item)
+
+        Utils.showSnackbar(view, "${item.title} removed from favorites ")
     }
 }

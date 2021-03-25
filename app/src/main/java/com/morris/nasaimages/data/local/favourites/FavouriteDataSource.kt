@@ -9,11 +9,6 @@ import com.morris.nasaimages.data.model.favourites.asFavouriteList
 
 class FavouriteDataSource(private val appDatabase: AppDatabase) {
 
-    /*suspend fun getFavourites(): Resource<List<Favourite>> {
-
-        return Resource.Success(appDatabase.favouriteDao().getFavourites().map { it.asFavourite() })
-    }*/
-
     fun getFavouritesLiveData(): LiveData<List<Favourite>> {
 
         return appDatabase.favouriteDao().getFavouritesLiveData().map { it.asFavouriteList() }

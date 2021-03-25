@@ -4,14 +4,8 @@ import androidx.lifecycle.LiveData
 import com.morris.nasaimages.data.local.favourites.FavouriteDataSource
 import com.morris.nasaimages.data.model.favourites.Favourite
 
-class FavouriteRepository(
-    private val dataSource: FavouriteDataSource,
-) : IFavouriteRepository {
+class FavouriteRepository(private val dataSource: FavouriteDataSource) : IFavouriteRepository {
 
-    /*override suspend fun getFavourites(): Resource<List<Favourite>> {
-
-        return dataSource.getFavourites()
-    }*/
 
     override fun getFavouritesLiveData(): LiveData<List<Favourite>> {
 

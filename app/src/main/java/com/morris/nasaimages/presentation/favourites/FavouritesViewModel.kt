@@ -14,7 +14,7 @@ class FavouritesViewModel(private val repository: FavouriteRepository) : ViewMod
 
 
     fun loadFavouritesLiveData() =
-        liveData<Resource<List<Favourite>>>(viewModelScope.coroutineContext + Dispatchers.IO) {
+        liveData(viewModelScope.coroutineContext + Dispatchers.IO) {
 
             emit(Resource.Loading())
 

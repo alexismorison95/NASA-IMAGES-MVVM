@@ -2,6 +2,7 @@ package com.morris.nasaimages.ui.apod
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.morris.nasaimages.core.BaseViewHolder
@@ -14,17 +15,26 @@ import com.squareup.picasso.Picasso
 
 class ApodAdapter(
     private val context: Context,
-    private val list: List<Apod>,
     private val itemClickListener: OnApodClickListener
 ) : RecyclerView.Adapter<BaseViewHolder<*>>() {
 
     interface OnApodClickListener {
 
         fun onApodClick(item: Apod, position: Int)
-        fun onFavClick(item: Apod)
+        fun onFavClick(item: Apod, view: View)
         fun onShareClick(item: Apod)
         fun onSetWallpaperClick(item: Apod)
     }
+
+
+    private var list = listOf<Apod>()
+
+    fun setList(listNew: List<Apod>) {
+
+        this.list = listNew
+        notifyDataSetChanged()
+    }
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<*> {
 
@@ -62,7 +72,7 @@ class ApodAdapter(
 
             // Click on btn Add to Favs
             binding.addToFavs.setOnClickListener {
-                itemClickListener.onFavClick(item)
+                itemClickListener.onFavClick(item, binding.addToFavs)
             }
 
             // Click on share btn

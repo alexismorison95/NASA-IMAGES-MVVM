@@ -2,6 +2,7 @@ package com.morris.nasaimages.ui.favourites
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.morris.nasaimages.core.BaseViewHolder
@@ -14,13 +15,14 @@ class FavouritesAdapter(
     private val itemClickListener: OnFavouriteClickListener
 ) : RecyclerView.Adapter<BaseViewHolder<*>>() {
 
-    private var list = listOf<Favourite>()
-
     interface OnFavouriteClickListener {
 
         fun onSetWallpaperClick(item: Favourite)
-        fun onDeleteClick(item: Favourite, position: Int)
+        fun onDeleteClick(item: Favourite, position: Int, view: View)
     }
+
+
+    private var list = listOf<Favourite>()
 
     fun setList(listNew: List<Favourite>) {
 
@@ -28,7 +30,6 @@ class FavouritesAdapter(
         notifyDataSetChanged()
     }
 
-    fun getList() = this.list
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<*> {
 
@@ -57,6 +58,7 @@ class FavouritesAdapter(
                 .into(image)
 
             title.text = item.title
+            date.text = item.date
 
             // Click in set wallpaper
             binding.btnSetWallpaper.setOnClickListener {
@@ -65,7 +67,7 @@ class FavouritesAdapter(
 
             // Click ein delete
             binding.btnDelete.setOnClickListener {
-                itemClickListener.onDeleteClick(item, position)
+                itemClickListener.onDeleteClick(item, position, binding.btnDelete)
             }
         }
     }

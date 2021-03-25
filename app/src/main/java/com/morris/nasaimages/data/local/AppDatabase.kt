@@ -10,7 +10,7 @@ import com.morris.nasaimages.data.local.favourites.FavouriteDao
 import com.morris.nasaimages.data.model.apod.ApodEntity
 import com.morris.nasaimages.data.model.favourites.FavouriteEntity
 
-@Database(entities = [FavouriteEntity::class, ApodEntity::class], version = 3)
+@Database(entities = [FavouriteEntity::class, ApodEntity::class], version = 4)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun favouriteDao(): FavouriteDao
