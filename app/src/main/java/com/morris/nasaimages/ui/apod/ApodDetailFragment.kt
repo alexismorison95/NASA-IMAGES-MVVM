@@ -14,9 +14,13 @@ import com.morris.nasaimages.databinding.FragmentApodDetailBinding
 import com.morris.nasaimages.domain.favourites.FavouriteRepository
 import com.morris.nasaimages.presentation.favourites.FavouritesViewModel
 import com.morris.nasaimages.presentation.favourites.FavouritesViewModelFactory
+import com.morris.nasaimages.utils.DownloadService
 import com.morris.nasaimages.utils.Utils
+import com.morris.nasaimages.utils.WallpaperService
 import com.squareup.picasso.Picasso
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@ExperimentalCoroutinesApi
 class ApodDetailFragment : Fragment(R.layout.fragment_apod_detail) {
 
     private lateinit var binding: FragmentApodDetailBinding
@@ -74,6 +78,11 @@ class ApodDetailFragment : Fragment(R.layout.fragment_apod_detail) {
         binding.share.setOnClickListener {
 
             Utils.shareItem(requireContext(), apodItem!!.hdurl)
+        }
+
+        binding.btnSetWallpaper.setOnClickListener {
+
+            WallpaperService.selectDialogWallpaper(requireContext(), binding.btnSetWallpaper, apodItem!!.hdurl)
         }
     }
 }

@@ -3,7 +3,6 @@ package com.morris.nasaimages.utils
 import android.content.Context
 import android.content.Intent
 import android.view.View
-import androidx.core.content.ContextCompat.startActivity
 import com.google.android.material.snackbar.Snackbar
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -16,15 +15,28 @@ class Utils {
         private val current = LocalDateTime.now()
         private val last = current.minusDays(15)
 
-        private val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-        private val endDate = current.format(formatter)
-        private val startDate = last.format(formatter)
+        private fun formatter(pattern: String): DateTimeFormatter = DateTimeFormatter.ofPattern(pattern)
 
-        fun getStartDate(): String = startDate
+        fun getStartDate(): String {
 
-        fun getEndDate(): String = endDate
+            val form = formatter("yyyy-MM-dd")
 
-        fun getCurrentDate(): String = startDate
+            return last.format(form)
+        }
+
+        fun getEndDate(): String {
+
+            val form = formatter("yyyy-MM-dd")
+
+            return current.format(form)
+        }
+
+        fun getCurrentDate(): String {
+
+            val form = formatter("yyyy-MM-dd hh:mm:ss")
+
+            return current.format(form)
+        }
 
         // Share url of image
         fun shareItem(context: Context, url: String) {
