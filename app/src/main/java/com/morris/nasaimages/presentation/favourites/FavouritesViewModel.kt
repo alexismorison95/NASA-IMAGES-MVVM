@@ -1,35 +1,76 @@
 package com.morris.nasaimages.presentation.favourites
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.liveData
-import androidx.lifecycle.map
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.morris.nasaimages.core.Resource
 import com.morris.nasaimages.data.model.favourites.Favourite
 import com.morris.nasaimages.domain.favourites.FavouriteRepository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
+@ExperimentalCoroutinesApi
 class FavouritesViewModel(private val repository: FavouriteRepository) : ViewModel() {
 
+    private val _query = MutableLiveData<String>()
+    fun setQuerySearch(query: String) {
+        _query.value = query
+    }
 
-    fun loadFavouritesLiveData() =
+
+    private val _favouritesData = MutableLiveData<List<Favourite>?>()
+    val favouritesData: LiveData<List<Favourite>?> = _favouritesData
+
+    private val _isLoadig = MutableLiveData<Boolean>()
+    val isLoadig: LiveData<Boolean> = _isLoadig
+
+    private val _onMessageError = MutableLiveData<String>()
+    val onMessageError: LiveData<String> = _onMessageError
+
+
+    init {
+        loadFavourites()
+    }
+
+    val fetchFavourites = _query.distinctUntilChanged().switchMap { query ->
+
         liveData(viewModelScope.coroutineContext + Dispatchers.IO) {
 
-            emit(Resource.Loading())
+            emit(repository.getFavouritesByTitle(query))
+        }
+    }
 
-            try {
-                emitSource(repository.getFavouritesLiveData().map { Resource.Success(it) })
-            } catch (e: Exception) {
-                emit(Resource.Failure(e))
+    fun loadFavourites() {
+
+        viewModelScope.launch {
+
+            when (val result = repository.getFavourites()) {
+
+                is Resource.Loading -> {
+                    _isLoadig.value = true
+                }
+                is Resource.Failure -> {
+
+                    _isLoadig.value = false
+                    _onMessageError.value = result.exception.message.toString()
+                }
+                is Resource.Success -> {
+
+                    _isLoadig.value = false
+                    _favouritesData.value = result.data
+                }
             }
         }
+    }
+
 
     fun saveFavourite(favourite: Favourite) {
 
         viewModelScope.launch {
 
             repository.saveFavourite(favourite)
+
+            loadFavourites()
         }
     }
 
@@ -38,6 +79,8 @@ class FavouritesViewModel(private val repository: FavouriteRepository) : ViewMod
         viewModelScope.launch {
 
             repository.deleteFavourite(favourite)
+
+            loadFavourites()
         }
     }
 }
