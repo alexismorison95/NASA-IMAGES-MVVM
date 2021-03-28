@@ -20,6 +20,7 @@ class WallpaperService {
         private const val LOCK_SCREEN = 1
         private const val BOTH_SCREEN = 2
 
+        // options = 0, 1, 2
         private val options = arrayOf("Main screen", "Lock screen", "Main and lock screen")
 
         fun selectDialogWallpaper(context: Context, view: View, url: String) {
@@ -31,7 +32,7 @@ class WallpaperService {
                 this.setTitle("Set wallpaper as")
                 setItems(options) { _, which ->
 
-                    Utils.showSnackbar(view, "Setting wallpaper")
+                    Utils.showSnackbar(view, "Setting wallpaper, progress is shown in notifications")
 
                     DownloadService.downloadImage(context, url, which)
                 }

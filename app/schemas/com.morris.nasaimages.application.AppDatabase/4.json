@@ -1,0 +1,108 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 4,
+    "identityHash": "3407f37d9cd334c56a384fadded50496",
+    "entities": [
+      {
+        "tableName": "favourites",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`title` TEXT NOT NULL, `url` TEXT NOT NULL, `hdurl` TEXT, `date` TEXT NOT NULL, PRIMARY KEY(`title`))",
+        "fields": [
+          {
+            "fieldPath": "title",
+            "columnName": "title",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "url",
+            "columnName": "url",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "hdurl",
+            "columnName": "hdurl",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "date",
+            "columnName": "date",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "title"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "apod",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`title` TEXT NOT NULL, `copyright` TEXT NOT NULL, `date` TEXT NOT NULL, `explanation` TEXT NOT NULL, `hdurl` TEXT NOT NULL, `media_type` TEXT NOT NULL, `url` TEXT NOT NULL, PRIMARY KEY(`title`))",
+        "fields": [
+          {
+            "fieldPath": "title",
+            "columnName": "title",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "copyright",
+            "columnName": "copyright",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "date",
+            "columnName": "date",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "explanation",
+            "columnName": "explanation",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "hdurl",
+            "columnName": "hdurl",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "media_type",
+            "columnName": "media_type",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "url",
+            "columnName": "url",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "title"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '3407f37d9cd334c56a384fadded50496')"
+    ]
+  }
+}

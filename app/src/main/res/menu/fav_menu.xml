@@ -9,11 +9,4 @@
         app:showAsAction="collapseActionView|always"
         app:actionViewClass="android.widget.SearchView" />
 
-    <item android:id="@+id/orderAscDescMenu"
-        android:title="Order asc/desc"/>
-
-    <item android:id="@+id/orderDateMenu"
-        android:icon="@drawable/ic_baseline_swap_vert_24"
-        android:title="Order by date"/>
-
 </menu>

@@ -33,9 +33,11 @@ class Utils {
 
         fun getCurrentDate(): String {
 
+            val currentToSave = LocalDateTime.now()
+
             val form = formatter("yyyy-MM-dd hh:mm:ss")
 
-            return current.format(form)
+            return currentToSave.format(form)
         }
 
         // Share url of image

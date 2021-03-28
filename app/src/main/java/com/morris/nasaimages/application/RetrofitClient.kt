@@ -2,7 +2,7 @@ package com.morris.nasaimages.application
 
 import com.google.gson.GsonBuilder
 import com.morris.nasaimages.application.AppConstants.APOD_URL
-import com.morris.nasaimages.data.remote.apod.ApodWebService
+import com.morris.nasaimages.modules.apod.data.remote.ApodWebService
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 

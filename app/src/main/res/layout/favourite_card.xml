@@ -52,13 +52,27 @@
                 tools:text="APOD"
                 android:textAppearance="?attr/textAppearanceHeadline6"/>
 
-            <TextView
-                android:id="@+id/date"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:text="2021-03-21"
-                android:textAppearance="?attr/textAppearanceBody2"
-                android:textColor="?android:attr/textColorSecondary"/>
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Date added: "
+                    android:textAppearance="?attr/textAppearanceBody2"
+                    android:textColor="?android:attr/textColorSecondary"/>
+
+                <TextView
+                    android:id="@+id/date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:text="2021-03-21"
+                    android:textAppearance="?attr/textAppearanceBody2"
+                    android:textColor="?android:attr/textColorSecondary"/>
+
+            </LinearLayout>
 
         </LinearLayout>
 
