@@ -3,6 +3,7 @@ package com.morris.nasaimages.modules.apod.ui
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.View
+import android.widget.ImageView
 import androidx.fragment.app.activityViewModels
 import com.morris.nasaimages.R
 import com.morris.nasaimages.application.AppDatabase
@@ -21,6 +22,7 @@ import com.squareup.picasso.Picasso
 class ApodDetailFragment : Fragment(R.layout.fragment_apod_detail) {
 
     private lateinit var binding: FragmentApodDetailBinding
+    private var isCenterCropImage = true
 
     private val viewModel by activityViewModels<FavouritesViewModel> {
         FavouritesViewModelFactory(
@@ -87,6 +89,21 @@ class ApodDetailFragment : Fragment(R.layout.fragment_apod_detail) {
             Utils.showSnackbar(binding.btnDownloadWallpaper, "Downloading wallpaper, progress is shown in notifications")
 
             DownloadService.downloadImage(requireContext(), apodItem!!.hdurl, WallpaperService.NOT_SET_WALLPAPER)
+        }
+
+        binding.image.setOnClickListener {
+
+            isCenterCropImage = if (isCenterCropImage) {
+
+                binding.image.scaleType = ImageView.ScaleType.CENTER_INSIDE
+
+                false
+            }
+            else {
+                binding.image.scaleType = ImageView.ScaleType.CENTER_CROP
+
+                true
+            }
         }
     }
 }

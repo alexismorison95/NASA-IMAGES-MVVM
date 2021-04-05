@@ -4,14 +4,14 @@ import androidx.lifecycle.*
 import com.morris.nasaimages.application.AppConstants.API_KEY
 import com.morris.nasaimages.core.Resource
 import com.morris.nasaimages.modules.apod.data.model.Apod
-import com.morris.nasaimages.modules.apod.repository.ApodRepository
+import com.morris.nasaimages.modules.apod.repository.IApodRepository
 import com.morris.nasaimages.utils.Utils
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @ExperimentalCoroutinesApi
-class ApodViewModel(private val repository: ApodRepository) : ViewModel() {
+class ApodViewModel(private val repository: IApodRepository) : ViewModel() {
 
     private val _apodData = MutableLiveData<List<Apod>>().apply { value = listOf() }
     val apodData: LiveData<List<Apod>> = _apodData
@@ -29,7 +29,7 @@ class ApodViewModel(private val repository: ApodRepository) : ViewModel() {
         loadApod()
     }
 
-    private fun loadApod() {
+    fun loadApod() {
 
         viewModelScope.launch {
 

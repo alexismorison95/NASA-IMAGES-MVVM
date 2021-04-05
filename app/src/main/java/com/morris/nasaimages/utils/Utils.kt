@@ -35,7 +35,7 @@ class Utils {
 
             val currentToSave = LocalDateTime.now()
 
-            val form = formatter("yyyy-MM-dd hh:mm:ss")
+            val form = formatter("yyyy-MM-dd HH:mm:ss")
 
             return currentToSave.format(form)
         }

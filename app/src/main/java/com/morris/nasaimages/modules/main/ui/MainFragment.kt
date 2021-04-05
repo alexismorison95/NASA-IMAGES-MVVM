@@ -47,7 +47,12 @@ class MainFragment : Fragment(R.layout.fragment_main), MainAdapter.OnMainClickLi
 
     override fun onMainClick(item: MainItem, position: Int) {
 
-        findNavController().navigate(R.id.action_mainFragment_to_apodFragment)
+        when (position) {
+
+            0 -> findNavController().navigate(R.id.action_mainFragment_to_apodFragment)
+            1 -> findNavController().navigate(R.id.action_mainFragment_to_apodFragment)
+            2 -> findNavController().navigate(R.id.action_mainFragment_to_libraryFormFragment)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -66,10 +71,12 @@ class MainFragment : Fragment(R.layout.fragment_main), MainAdapter.OnMainClickLi
             }
             R.id.settingsMenu -> {
 
+                findNavController().navigate(R.id.action_mainFragment_to_settingsFragment)
                 true
             }
             else -> {
-                // About
+
+                findNavController().navigate(R.id.action_mainFragment_to_aboutFragment)
                 true
             }
         }

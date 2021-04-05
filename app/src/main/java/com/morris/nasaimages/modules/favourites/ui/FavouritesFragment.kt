@@ -7,6 +7,7 @@ import android.view.Menu
 import android.view.MenuInflater
 import androidx.fragment.app.Fragment
 import android.view.View
+import android.widget.ImageView
 import android.widget.SearchView
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
@@ -30,6 +31,8 @@ class FavouritesFragment : Fragment(R.layout.fragment_favourites),
 
     private lateinit var binding: FragmentFavouritesBinding
     private lateinit var favouriteAdapter: FavouritesAdapter
+
+    private var isCenterCropImage = true
 
     private val viewModel by activityViewModels<FavouritesViewModel> {
         FavouritesViewModelFactory(
@@ -114,6 +117,21 @@ class FavouritesFragment : Fragment(R.layout.fragment_favourites),
                     Utils.showSnackbar(view, "${item.title} removed from favorites ")
                 }
             show()
+        }
+    }
+
+    override fun onImageClick(view: ImageView) {
+
+        isCenterCropImage = if (isCenterCropImage) {
+
+            view.scaleType = ImageView.ScaleType.CENTER_INSIDE
+
+            false
+        }
+        else {
+            view.scaleType = ImageView.ScaleType.CENTER_CROP
+
+            true
         }
     }
 

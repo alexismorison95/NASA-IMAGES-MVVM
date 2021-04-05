@@ -24,6 +24,27 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_mainFragment_to_aboutFragment"
+            app:destination="@id/aboutFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_mainFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_mainFragment_to_libraryFormFragment"
+            app:destination="@id/libraryFormFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/apodFragment"
@@ -48,4 +69,32 @@
         android:name="com.morris.nasaimages.modules.favourites.ui.FavouritesFragment"
         android:label="Favourites"
         tools:layout="@layout/fragment_favourites" />
+    <fragment
+        android:id="@+id/aboutFragment"
+        android:name="com.morris.nasaimages.modules.about.AboutFragment"
+        android:label="About"
+        tools:layout="@layout/fragment_about" />
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.morris.nasaimages.modules.settings.SettingsFragment"
+        android:label="Settings"
+        tools:layout="@layout/fragment_settings" />
+    <fragment
+        android:id="@+id/libraryFormFragment"
+        android:name="com.morris.nasaimages.modules.library.ui.LibraryFormFragment"
+        android:label="NASA Image Library"
+        tools:layout="@layout/fragment_library_form" >
+        <action
+            android:id="@+id/action_libraryFormFragment_to_libraryResultsFragment"
+            app:destination="@id/libraryResultsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/libraryResultsFragment"
+        android:name="com.morris.nasaimages.modules.library.ui.LibraryResultsFragment"
+        android:label="NASA Image Library"
+        tools:layout="@layout/fragment_library_results" />
 </navigation>

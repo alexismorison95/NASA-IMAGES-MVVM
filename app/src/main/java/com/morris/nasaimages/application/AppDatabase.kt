@@ -6,7 +6,6 @@ import com.morris.nasaimages.application.AppConstants.DATABASE_NAME
 import com.morris.nasaimages.modules.apod.data.local.ApodDao
 import com.morris.nasaimages.modules.favourites.data.local.FavouriteDao
 import com.morris.nasaimages.modules.apod.data.model.ApodEntity
-import com.morris.nasaimages.modules.favourites.data.model.DateConverts
 import com.morris.nasaimages.modules.favourites.data.model.FavouriteEntity
 
 @Database(entities = [FavouriteEntity::class, ApodEntity::class], version = 5)

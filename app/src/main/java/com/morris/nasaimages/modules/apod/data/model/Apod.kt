@@ -10,7 +10,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class Apod(
     @SerializedName("copyright")
-    val copyright: String = "",
+    val copyright: String = "NASA",
     @SerializedName("date")
     val date: String = "",
     @SerializedName("explanation")

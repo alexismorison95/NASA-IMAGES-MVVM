@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.morris.nasaimages.core.BaseViewHolder
 import com.morris.nasaimages.modules.favourites.data.model.Favourite
@@ -19,6 +20,7 @@ class FavouritesAdapter(
 
         fun onSetWallpaperClick(item: Favourite, view: View)
         fun onDeleteClick(item: Favourite, view: View)
+        fun onImageClick(view: ImageView)
     }
 
 
@@ -71,6 +73,10 @@ class FavouritesAdapter(
             // Click ein delete
             binding.btnDelete.setOnClickListener {
                 itemClickListener.onDeleteClick(item, binding.btnDelete)
+            }
+
+            binding.image.setOnClickListener {
+                itemClickListener.onImageClick(binding.image)
             }
         }
     }

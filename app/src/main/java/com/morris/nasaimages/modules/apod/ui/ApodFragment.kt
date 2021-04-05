@@ -8,7 +8,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.morris.nasaimages.R
-import com.morris.nasaimages.application.RetrofitClient
+import com.morris.nasaimages.modules.apod.ApodRetrofitClient
 import com.morris.nasaimages.application.AppDatabase
 import com.morris.nasaimages.modules.apod.data.local.ApodLocalSource
 import com.morris.nasaimages.modules.favourites.data.local.FavouriteDataSource
@@ -35,7 +35,7 @@ class ApodFragment : Fragment(R.layout.fragment_apod), ApodAdapter.OnApodClickLi
     private val viewModelApod by activityViewModels<ApodViewModel> {
         ApodViewModelFactory(
             ApodRepository(
-                ApodRemoteSource(RetrofitClient.apodWebService(RetrofitClient.retrofitApodInstance())),
+                ApodRemoteSource(ApodRetrofitClient.apodWebService(ApodRetrofitClient.retrofitInstance())),
                 ApodLocalSource(AppDatabase.getRoomInstance(requireActivity().applicationContext))
             )
         )
@@ -63,6 +63,8 @@ class ApodFragment : Fragment(R.layout.fragment_apod), ApodAdapter.OnApodClickLi
         setRecyclerView()
 
         setObservers()
+
+        viewModelApod.loadApod()
     }
 
     private fun setObservers() {

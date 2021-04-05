@@ -18,4 +18,10 @@
         <item name="cornerSize">2%</item>
     </style>
 
+    <style name="Slider" parent="Widget.MaterialComponents.Slider">
+        <item name="colorPrimary">@color/design_default_color_primary</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorOnSurface">@color/design_default_color_primary</item>
+    </style>
+
 </resources>

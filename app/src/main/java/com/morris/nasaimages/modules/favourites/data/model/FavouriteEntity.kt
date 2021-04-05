@@ -5,6 +5,8 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverter
 import com.morris.nasaimages.modules.apod.data.model.Apod
+import com.morris.nasaimages.modules.library.data.model.Item
+import com.morris.nasaimages.modules.library.data.model.Library
 import com.morris.nasaimages.utils.Utils
 import java.util.*
 
@@ -36,6 +38,9 @@ data class Favourite(
 
 fun Apod.asFavourite(): Favourite =
     Favourite(title = this.title, url = this.url, hdurl = this.hdurl, date = Utils.getCurrentDate())
+
+fun Item.asFavourite(): Favourite =
+    Favourite(title = this.data[0].title, url = this.links[0].href, date = Utils.getCurrentDate())
 
 fun FavouriteEntity.asFavourite(): Favourite =
     Favourite(title = this.title, url = this.url, hdurl = this.hdurl, date = this.date)

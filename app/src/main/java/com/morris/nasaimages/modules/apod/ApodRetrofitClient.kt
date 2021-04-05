@@ -1,4 +1,4 @@
-package com.morris.nasaimages.application
+package com.morris.nasaimages.modules.apod
 
 import com.google.gson.GsonBuilder
 import com.morris.nasaimages.application.AppConstants.APOD_URL
@@ -6,13 +6,13 @@ import com.morris.nasaimages.modules.apod.data.remote.ApodWebService
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class RetrofitClient {
+class ApodRetrofitClient {
 
     companion object {
 
         private var instanceApod: Retrofit? = null
 
-        fun retrofitApodInstance(): Retrofit {
+        fun retrofitInstance(): Retrofit {
 
             instanceApod = instanceApod ?: Retrofit.Builder()
                 .baseUrl(APOD_URL)
@@ -22,10 +22,6 @@ class RetrofitClient {
             return instanceApod!!
         }
 
-        fun apodWebService(retrofit: Retrofit): ApodWebService {
-
-            return retrofit.create(ApodWebService::class.java)
-        }
-
+        fun apodWebService(retrofit: Retrofit): ApodWebService = retrofit.create(ApodWebService::class.java)
     }
 }
