@@ -48,13 +48,11 @@ class LibraryResultsFragment :
 
     private var page: Int? = null
 
-    val repository = LibraryRepository(
-        LibraryRemoteSource(LibraryRetrofitClient.libraryWebService(LibraryRetrofitClient.retrofitInstance()))
-    )
-
     private val viewModelLibrary by viewModels<LibraryViewModel> {
         LibraryViewModelFactory(
-            repository
+            LibraryRepository(
+                LibraryRemoteSource(LibraryRetrofitClient.libraryWebService(LibraryRetrofitClient.retrofitInstance()))
+            )
         )
     }
 

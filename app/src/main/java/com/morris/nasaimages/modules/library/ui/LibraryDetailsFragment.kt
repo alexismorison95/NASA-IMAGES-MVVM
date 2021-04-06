@@ -50,13 +50,11 @@ class LibraryDetailsFragment : Fragment(R.layout.fragment_library_details) {
         )
     }
 
-    val repository = LibraryRepository(
-        LibraryRemoteSource(LibraryRetrofitClient.libraryWebService(LibraryRetrofitClient.retrofitInstance()))
-    )
-
     private val viewModelLibrary by viewModels<LibraryViewModel> {
         LibraryViewModelFactory(
-            repository
+            LibraryRepository(
+                LibraryRemoteSource(LibraryRetrofitClient.libraryWebService(LibraryRetrofitClient.retrofitInstance()))
+            )
         )
     }
 

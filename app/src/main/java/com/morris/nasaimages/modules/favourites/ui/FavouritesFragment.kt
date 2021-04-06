@@ -11,6 +11,8 @@ import android.widget.ImageView
 import android.widget.SearchView
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.morris.nasaimages.R
@@ -26,13 +28,13 @@ import com.morris.nasaimages.utils.Utils
 import com.morris.nasaimages.utils.WallpaperService
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
-class FavouritesFragment : Fragment(R.layout.fragment_favourites),
-    FavouritesAdapter.OnFavouriteClickListener {
+class FavouritesFragment :
+    Fragment(R.layout.fragment_favourites),
+    FavouritesAdapter.OnFavouriteClickListener
+{
 
     private lateinit var binding: FragmentFavouritesBinding
     private lateinit var favouriteAdapter: FavouritesAdapter
-
-    private var isCenterCropImage = true
 
     private val viewModel by activityViewModels<FavouritesViewModel> {
         FavouritesViewModelFactory(
@@ -63,6 +65,12 @@ class FavouritesFragment : Fragment(R.layout.fragment_favourites),
         setObservers()
     }
 
+    private fun setRecyclerView() {
+
+        binding.recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
+        binding.recyclerView.adapter = favouriteAdapter
+    }
+
     private fun setObservers() {
 
         viewModel.isLoadig.observe(viewLifecycleOwner, {
@@ -88,51 +96,13 @@ class FavouritesFragment : Fragment(R.layout.fragment_favourites),
         })
     }
 
-    private fun setRecyclerView() {
 
-        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        binding.recyclerView.adapter = favouriteAdapter
-    }
+    override fun onCardClick(item: Favourite, view: View) {
 
-    override fun onSetWallpaperClick(item: Favourite, view: View) {
+        val bundle = Bundle()
+        bundle.putParcelable("param1", item)
 
-        val url = item.hdurl ?: item.url
-
-        WallpaperService.selectDialogWallpaper(requireContext(), view, url)
-    }
-
-    override fun onDeleteClick(item: Favourite, view: View) {
-
-        val builder = MaterialAlertDialogBuilder(requireContext())
-
-        with(builder) {
-
-            this.setTitle("Remove ${item.title}?")
-                .setMessage("This action can not be undone")
-                .setNegativeButton("Cancel") { _, _ -> }
-                .setPositiveButton("Accept") {_, _ ->
-
-                    viewModel.deleteFavourite(item)
-
-                    Utils.showSnackbar(view, "${item.title} removed from favorites ")
-                }
-            show()
-        }
-    }
-
-    override fun onImageClick(view: ImageView) {
-
-        isCenterCropImage = if (isCenterCropImage) {
-
-            view.scaleType = ImageView.ScaleType.CENTER_INSIDE
-
-            false
-        }
-        else {
-            view.scaleType = ImageView.ScaleType.CENTER_CROP
-
-            true
-        }
+        findNavController().navigate(R.id.action_favouritesFragment_to_favouriteDetailFragment, bundle)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

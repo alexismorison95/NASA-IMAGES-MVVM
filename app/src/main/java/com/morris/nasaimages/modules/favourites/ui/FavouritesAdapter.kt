@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.morris.nasaimages.core.BaseViewHolder
 import com.morris.nasaimages.modules.favourites.data.model.Favourite
 import com.morris.nasaimages.databinding.FavouriteCardBinding
+import com.morris.nasaimages.databinding.FavouriteCardMinBinding
 import com.squareup.picasso.Picasso
 
 class FavouritesAdapter(
@@ -18,9 +19,7 @@ class FavouritesAdapter(
 
     interface OnFavouriteClickListener {
 
-        fun onSetWallpaperClick(item: Favourite, view: View)
-        fun onDeleteClick(item: Favourite, view: View)
-        fun onImageClick(view: ImageView)
+        fun onCardClick(item: Favourite, view: View)
     }
 
 
@@ -32,51 +31,33 @@ class FavouritesAdapter(
         notifyDataSetChanged()
     }
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<*> {
 
-        val itemBinding = FavouriteCardBinding.inflate(LayoutInflater.from(context), parent, false)
+        val itemBindingMin = FavouriteCardMinBinding.inflate(LayoutInflater.from(context), parent, false)
 
-        return FavViewHolder(itemBinding)
+        return FavViewHolderMin(itemBindingMin)
     }
 
     override fun onBindViewHolder(holder: BaseViewHolder<*>, position: Int) {
 
         when (holder) {
-            is FavViewHolder -> holder.bind(this.list[position], position)
+            is FavViewHolderMin -> holder.bind(this.list[position], position)
         }
     }
 
     override fun getItemCount(): Int = this.list.size
 
 
-    inner class FavViewHolder(private val binding: FavouriteCardBinding) : BaseViewHolder<Favourite>(binding.root) {
+    inner class FavViewHolderMin(private val binding: FavouriteCardMinBinding) : BaseViewHolder<Favourite>(binding.root) {
 
         override fun bind(item: Favourite, position: Int) = with(binding) {
 
-            // Get Image
             Picasso.get()
                 .load(item.url)
                 .into(image)
 
-            title.text = item.title
-
-            val dateArray = item.date.split(" ")
-
-            date.text = dateArray[0]
-
-            // Click in set wallpaper
-            binding.btnSetWallpaper.setOnClickListener {
-                itemClickListener.onSetWallpaperClick(item, binding.btnSetWallpaper)
-            }
-
-            // Click ein delete
-            binding.btnDelete.setOnClickListener {
-                itemClickListener.onDeleteClick(item, binding.btnDelete)
-            }
-
-            binding.image.setOnClickListener {
-                itemClickListener.onImageClick(binding.image)
+            binding.root.setOnClickListener {
+                itemClickListener.onCardClick(item, binding.image)
             }
         }
     }

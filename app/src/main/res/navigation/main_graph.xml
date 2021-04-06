@@ -68,7 +68,15 @@
         android:id="@+id/favouritesFragment"
         android:name="com.morris.nasaimages.modules.favourites.ui.FavouritesFragment"
         android:label="Favourites"
-        tools:layout="@layout/fragment_favourites" />
+        tools:layout="@layout/fragment_favourites" >
+        <action
+            android:id="@+id/action_favouritesFragment_to_favouriteDetailFragment"
+            app:destination="@id/favouriteDetailFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
     <fragment
         android:id="@+id/aboutFragment"
         android:name="com.morris.nasaimages.modules.about.AboutFragment"
@@ -110,4 +118,9 @@
         android:name="com.morris.nasaimages.modules.library.ui.LibraryDetailsFragment"
         android:label="NASA Image Library"
         tools:layout="@layout/fragment_library_details" />
+    <fragment
+        android:id="@+id/favouriteDetailFragment"
+        android:name="com.morris.nasaimages.modules.favourites.ui.FavouriteDetailFragment"
+        android:label="Favourites"
+        tools:layout="@layout/fragment_favourite_detail" />
 </navigation>

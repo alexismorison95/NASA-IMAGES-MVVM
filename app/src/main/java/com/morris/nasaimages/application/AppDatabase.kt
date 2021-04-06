@@ -8,7 +8,7 @@ import com.morris.nasaimages.modules.favourites.data.local.FavouriteDao
 import com.morris.nasaimages.modules.apod.data.model.ApodEntity
 import com.morris.nasaimages.modules.favourites.data.model.FavouriteEntity
 
-@Database(entities = [FavouriteEntity::class, ApodEntity::class], version = 5)
+@Database(entities = [FavouriteEntity::class, ApodEntity::class], version = 6)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun favouriteDao(): FavouriteDao
