@@ -1,10 +1,14 @@
 package com.morris.nasaimages.modules.apod.ui
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import androidx.fragment.app.Fragment
 import android.view.View
 import android.widget.ImageView
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import com.morris.nasaimages.R
 import com.morris.nasaimages.application.AppDatabase
 import com.morris.nasaimages.modules.favourites.data.local.FavouriteDataSource
@@ -41,6 +45,8 @@ class ApodDetailFragment : Fragment(R.layout.fragment_apod_detail) {
 
             apodItem = it.getParcelable("param1")
         }
+
+        setHasOptionsMenu(true)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -67,7 +73,7 @@ class ApodDetailFragment : Fragment(R.layout.fragment_apod_detail) {
 
     private fun setListeners() {
 
-        binding.addToFavs.setOnClickListener {
+        /*binding.addToFavs.setOnClickListener {
 
             viewModel.saveFavourite(apodItem!!.asFavourite())
 
@@ -77,7 +83,7 @@ class ApodDetailFragment : Fragment(R.layout.fragment_apod_detail) {
         binding.share.setOnClickListener {
 
             Utils.shareItem(requireContext(), apodItem!!.hdurl)
-        }
+        }*/
 
         binding.btnSetWallpaper.setOnClickListener {
 
@@ -104,6 +110,33 @@ class ApodDetailFragment : Fragment(R.layout.fragment_apod_detail) {
 
                 true
             }
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+
+        inflater.inflate(R.menu.details_menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+        return when (item.itemId) {
+
+            R.id.menuAddToFavs -> {
+
+                viewModel.saveFavourite(apodItem!!.asFavourite())
+
+                Utils.showSnackbar(binding.root, "${apodItem!!.title} added to favorites")
+
+                true
+            }
+            R.id.menuShare -> {
+
+                Utils.shareItem(requireContext(), apodItem!!.hdurl)
+
+                true
+            }
+            else -> { findNavController().navigateUp() }
         }
     }
 }

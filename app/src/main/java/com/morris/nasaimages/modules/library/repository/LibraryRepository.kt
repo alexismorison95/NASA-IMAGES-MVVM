@@ -1,6 +1,7 @@
 package com.morris.nasaimages.modules.library.repository
 
 import com.morris.nasaimages.core.Resource
+import com.morris.nasaimages.modules.library.data.model.Asset
 import com.morris.nasaimages.modules.library.data.model.Library
 import com.morris.nasaimages.modules.library.data.remote.LibraryRemoteSource
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -17,6 +18,17 @@ class LibraryRepository(private val remoteSource: LibraryRemoteSource) : ILibrar
         callbackFlow {
 
             remoteSource.getLibrary(query, page, startYear, endYear).collect {
+
+                offer(it)
+            }
+            awaitClose()
+        }
+
+    override suspend fun getAsset(id: String): Flow<Resource<Asset>> =
+
+        callbackFlow {
+
+            remoteSource.getAsset(id).collect {
 
                 offer(it)
             }

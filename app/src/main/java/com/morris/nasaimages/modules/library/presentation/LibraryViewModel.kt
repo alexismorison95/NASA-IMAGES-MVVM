@@ -1,16 +1,20 @@
 package com.morris.nasaimages.modules.library.presentation
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import android.util.Log
+import android.view.View
+import android.widget.Toast
+import androidx.lifecycle.*
 import com.morris.nasaimages.core.Resource
+import com.morris.nasaimages.modules.library.data.model.Asset
 import com.morris.nasaimages.modules.library.data.model.Library
 import com.morris.nasaimages.modules.library.repository.ILibraryRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 
-class LibraryviewModel(private val repository: ILibraryRepository) : ViewModel() {
+class LibraryViewModel(private val repository: ILibraryRepository) : ViewModel() {
 
     private val _libraryData = MutableLiveData<Library?>()
     val libraryData: LiveData<Library?> = _libraryData
@@ -46,5 +50,20 @@ class LibraryviewModel(private val repository: ILibraryRepository) : ViewModel()
                 }
             }
         }
+    }
+
+    fun loadAsset(id: String) =
+
+        liveData(viewModelScope.coroutineContext + Dispatchers.IO) {
+
+            repository.getAsset(id).collect {
+
+                when (it) {
+
+                    is Resource.Loading -> { }
+                    is Resource.Failure -> { }
+                    is Resource.Success -> { emit(it.data) }
+                }
+            }
     }
 }

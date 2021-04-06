@@ -34,6 +34,12 @@ class LibraryAdapter(
 
     fun setList(listNew: List<Item>) {
 
+        this.list = listNew
+        notifyDataSetChanged()
+    }
+
+    fun updateList(listNew: List<Item>) {
+
         this.list = list + listNew
         notifyDataSetChanged()
     }
@@ -74,7 +80,7 @@ class LibraryAdapter(
                 .into(image)
 
             title.text = item.data[0].title
-            center.text = item.data[0].center
+            date.text = item.data[0].dateCreated.split("T")[0]
 
             // Click in card
             binding.root.setOnClickListener {

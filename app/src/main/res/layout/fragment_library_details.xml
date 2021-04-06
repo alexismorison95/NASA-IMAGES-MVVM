@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".modules.apod.ui.ApodDetailFragment">
+    tools:context=".modules.library.ui.LibraryDetailsFragment">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -30,24 +29,10 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_gravity="end"
-                android:layout_marginVertical="8dp">
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp">
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/addToFavs"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    android:text="Add to favs"
-                    style="?attr/materialButtonOutlinedStyle" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/share"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Share URL"
-                    style="?attr/materialButtonOutlinedStyle" />
-
-                &lt;!&ndash;<ImageButton
+                <ImageButton
                     android:id="@+id/addToFavs"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
@@ -60,7 +45,7 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:src="@drawable/ic_baseline_share_24"
-                    android:background="?attr/selectableItemBackgroundBorderless"/>&ndash;&gt;
+                    android:background="?attr/selectableItemBackgroundBorderless"/>
 
             </LinearLayout>-->
 
@@ -132,5 +117,12 @@
         </LinearLayout>
 
     </ScrollView>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

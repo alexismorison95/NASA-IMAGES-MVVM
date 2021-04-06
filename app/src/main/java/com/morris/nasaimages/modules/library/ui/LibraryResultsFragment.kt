@@ -3,14 +3,18 @@ package com.morris.nasaimages.modules.library.ui
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.addCallback
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.morris.nasaimages.R
 import com.morris.nasaimages.application.AppDatabase
+import com.morris.nasaimages.application.MainActivity
+import com.morris.nasaimages.core.Resource
 import com.morris.nasaimages.databinding.FragmentLibraryResultsBinding
 import com.morris.nasaimages.modules.favourites.data.local.FavouriteDataSource
 import com.morris.nasaimages.modules.favourites.data.model.asFavourite
@@ -21,28 +25,36 @@ import com.morris.nasaimages.modules.library.LibraryRetrofitClient
 import com.morris.nasaimages.modules.library.data.model.Item
 import com.morris.nasaimages.modules.library.data.model.QueryLibrary
 import com.morris.nasaimages.modules.library.data.remote.LibraryRemoteSource
-import com.morris.nasaimages.modules.library.presentation.LibraryviewModel
-import com.morris.nasaimages.modules.library.presentation.LibraryviewModelFactory
+import com.morris.nasaimages.modules.library.presentation.LibraryViewModel
+import com.morris.nasaimages.modules.library.presentation.LibraryViewModelFactory
 import com.morris.nasaimages.modules.library.repository.LibraryRepository
 import com.morris.nasaimages.utils.Utils
+import com.morris.nasaimages.utils.WallpaperService
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
+import java.util.*
 
 @ExperimentalCoroutinesApi
 class LibraryResultsFragment :
     Fragment(R.layout.fragment_library_results),
     LibraryAdapter.OnLibraryClickListener,
-    LibraryAdapter.OnNewPageListener{
+    LibraryAdapter.OnNewPageListener
+{
 
     private lateinit var binding: FragmentLibraryResultsBinding
     private lateinit var libraryAdapter: LibraryAdapter
 
-    private var page = 1
+    private var page: Int? = null
 
-    private val viewModelLibrary by activityViewModels<LibraryviewModel> {
-        LibraryviewModelFactory(
-            LibraryRepository(
-                LibraryRemoteSource(LibraryRetrofitClient.libraryWebService(LibraryRetrofitClient.retrofitInstance()))
-            )
+    val repository = LibraryRepository(
+        LibraryRemoteSource(LibraryRetrofitClient.libraryWebService(LibraryRetrofitClient.retrofitInstance()))
+    )
+
+    private val viewModelLibrary by viewModels<LibraryViewModel> {
+        LibraryViewModelFactory(
+            repository
         )
     }
 
@@ -64,17 +76,28 @@ class LibraryResultsFragment :
             queryLibrary = it.getParcelable("param1")
         }
 
+        page = 1
+
         libraryAdapter = LibraryAdapter(requireContext(), this, this)
     }
 
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        (activity as MainActivity).supportActionBar?.title = queryLibrary!!.queryText.capitalize(Locale.getDefault())
 
         binding = FragmentLibraryResultsBinding.bind(view)
 
         setRecyclerView()
 
-        viewModelLibrary.loadLibrary(queryLibrary!!.queryText, page.toString(), queryLibrary!!.startYear, queryLibrary!!.endYear)
+        viewModelLibrary.loadLibrary(
+            queryLibrary!!.queryText,
+            page.toString(),
+            queryLibrary!!.startYear,
+            queryLibrary!!.endYear
+        )
 
         setObservers()
     }
@@ -83,6 +106,8 @@ class LibraryResultsFragment :
 
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.adapter = libraryAdapter
+
+        //libraryAdapter.setList(listOf())
     }
 
     private fun setObservers() {
@@ -96,7 +121,7 @@ class LibraryResultsFragment :
 
         viewModelLibrary.libraryData.observe(viewLifecycleOwner, {
 
-            libraryAdapter.setList(it!!.collection.items)
+            libraryAdapter.updateList(it!!.collection.items)
         })
 
         viewModelLibrary.onMessageError.observe(viewLifecycleOwner, {
@@ -106,35 +131,80 @@ class LibraryResultsFragment :
     }
 
     override fun onLibraryClick(item: Item) {
-        Toast.makeText(requireContext(), "Details ${item.data[0].title}", Toast.LENGTH_SHORT).show()
+
+        val bundle = Bundle()
+        bundle.putParcelable("param1", item)
+
+        findNavController().navigate(R.id.action_libraryResultsFragment_to_libraryDetailsFragment, bundle)
     }
 
     override fun onFavClick(item: Item, view: View) {
 
-        // Necesito traer la imagen en hd
+        if (item.data[0].hdUrl != null) {
 
-        viewModelFavs.saveFavourite(item.asFavourite())
+            viewModelFavs.saveFavourite(item.asFavourite())
+            Utils.showSnackbar(view, "${item.data[0].title} added to favorites")
+        }
+        else {
 
-        Utils.showSnackbar(view, "${item.data[0].title} added to favorites")
+            viewModelLibrary.loadAsset(item.data[0].id).observe(viewLifecycleOwner, {
+
+                item.data[0].hdUrl = it.collection.items[0].href.replace("http", "https")
+
+                viewModelFavs.saveFavourite(item.asFavourite())
+                Utils.showSnackbar(view, "${item.data[0].title} added to favorites")
+            })
+        }
     }
 
     override fun onShareClick(item: Item) {
-        Toast.makeText(requireContext(), "Share ${item.data[0].title}", Toast.LENGTH_SHORT).show()
+
+        if (item.data[0].hdUrl != null) {
+
+            Utils.shareItem(requireContext(), item.data[0].hdUrl!!)
+        }
+        else {
+
+            viewModelLibrary.loadAsset(item.data[0].id).observe(viewLifecycleOwner, {
+
+                item.data[0].hdUrl = it.collection.items[0].href.replace("http", "https")
+
+                Utils.shareItem(requireContext(), item.data[0].hdUrl!!)
+            })
+        }
     }
 
     override fun onSetWallpaperClick(item: Item, view: View) {
-        Toast.makeText(requireContext(), "SET Wallpaper ${item.data[0].title}", Toast.LENGTH_SHORT).show()
+
+        if (item.data[0].hdUrl != null) {
+
+            WallpaperService.selectDialogWallpaper(requireContext(), view, item.data[0].hdUrl!!)
+        }
+        else {
+
+            viewModelLibrary.loadAsset(item.data[0].id).observe(viewLifecycleOwner, {
+
+                item.data[0].hdUrl = it.collection.items[0].href.replace("http", "https")
+
+                WallpaperService.selectDialogWallpaper(requireContext(), view, item.data[0].hdUrl!!)
+            })
+        }
     }
 
     override fun onNewPage() {
 
         if (viewModelLibrary.libraryData.value!!.collection.items.isNotEmpty()) {
 
-            page += 1
+            page = page?.plus(1)
 
-            Toast.makeText(requireContext(), "loading more...",Toast.LENGTH_SHORT).show()
+            Utils.showSnackbar(binding.root, "loading more...")
 
-            viewModelLibrary.loadLibrary(queryLibrary!!.queryText, page.toString(), queryLibrary!!.startYear, queryLibrary!!.endYear)
+            viewModelLibrary.loadLibrary(
+                queryLibrary!!.queryText,
+                page.toString(),
+                queryLibrary!!.startYear,
+                queryLibrary!!.endYear
+            )
         }
     }
 }

@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.morris.nasaimages.modules.library.repository.ILibraryRepository
 
-class LibraryviewModelFactory(private val repository: ILibraryRepository) : ViewModelProvider.Factory {
+class LibraryViewModelFactory(private val repository: ILibraryRepository) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
 

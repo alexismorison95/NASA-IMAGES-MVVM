@@ -31,7 +31,7 @@ data class FavouriteEntity(
 data class Favourite(
     val title: String = "",
     val url: String = "",
-    val hdurl: String? = null,
+    var hdurl: String? = null,
     val date: String,
 )
 
@@ -40,7 +40,7 @@ fun Apod.asFavourite(): Favourite =
     Favourite(title = this.title, url = this.url, hdurl = this.hdurl, date = Utils.getCurrentDate())
 
 fun Item.asFavourite(): Favourite =
-    Favourite(title = this.data[0].title, url = this.links[0].href, date = Utils.getCurrentDate())
+    Favourite(title = this.data[0].title, url = this.links[0].href, hdurl = this.data[0].hdUrl, date = Utils.getCurrentDate())
 
 fun FavouriteEntity.asFavourite(): Favourite =
     Favourite(title = this.title, url = this.url, hdurl = this.hdurl, date = this.date)

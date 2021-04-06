@@ -54,7 +54,7 @@
                 android:layout_marginBottom="6dp"/>
 
             <TextView
-                android:id="@+id/center"
+                android:id="@+id/date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 tools:text="JPL"

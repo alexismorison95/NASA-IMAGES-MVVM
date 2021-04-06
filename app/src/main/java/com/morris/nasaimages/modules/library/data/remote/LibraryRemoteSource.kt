@@ -1,6 +1,8 @@
 package com.morris.nasaimages.modules.library.data.remote
 
+import android.util.Log
 import com.morris.nasaimages.core.Resource
+import com.morris.nasaimages.modules.library.data.model.Asset
 import com.morris.nasaimages.modules.library.data.model.Library
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
@@ -17,6 +19,22 @@ class LibraryRemoteSource(private val webService: LibraryWebService) {
             try {
                 offer(
                     Resource.Success(webService.search(query, page, startYear, endYear))
+                )
+            }
+            catch (e: Exception) {
+                offer(Resource.Failure(e))
+
+                Log.d("TAG", "getLibrary: $e")
+            }
+            awaitClose()
+        }
+
+    suspend fun getAsset(id: String): Flow<Resource<Asset>> =
+
+        callbackFlow {
+            try {
+                offer(
+                    Resource.Success(webService.getAsset(id))
                 )
             }
             catch (e: Exception) {
