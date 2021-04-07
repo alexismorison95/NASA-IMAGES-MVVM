@@ -1,13 +1,25 @@
 package com.morris.nasaimages.modules.settings
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.util.Log
+import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.PreferenceManager
 import com.morris.nasaimages.R
+import com.morris.nasaimages.utils.Utils
 
+class SettingsFragment : PreferenceFragmentCompat() {
 
-class SettingsFragment : Fragment(R.layout.fragment_settings) {
+    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+        setPreferencesFromResource(R.xml.root_preferences, rootKey)
 
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireActivity())
+
+        sharedPreferences.registerOnSharedPreferenceChangeListener { _, key ->
+
+            if (key == "theme") {
+
+                sharedPreferences.getString(key, "")?.let { Utils.setTheme(it) }
+            }
+        }
+    }
 }

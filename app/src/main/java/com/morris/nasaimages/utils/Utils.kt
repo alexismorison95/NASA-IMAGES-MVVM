@@ -3,6 +3,8 @@ package com.morris.nasaimages.utils
 import android.content.Context
 import android.content.Intent
 import android.view.View
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.preference.PreferenceManager
 import com.google.android.material.snackbar.Snackbar
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -57,6 +59,16 @@ class Utils {
         fun showSnackbar(contextView: View, msg: String) {
 
             Snackbar.make(contextView, msg, Snackbar.LENGTH_LONG).show()
+        }
+
+        // Theme manager
+        fun setTheme(value: String) {
+
+            when (value) {
+                "Light" -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                "Dark" -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                else -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+            }
         }
     }
 }

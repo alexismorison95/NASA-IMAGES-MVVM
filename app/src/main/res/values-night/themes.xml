@@ -2,16 +2,17 @@
     <!-- Base application theme. -->
     <style name="Theme.NasaImages" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_200</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
+        <item name="colorPrimary">@color/color_primary_light</item>
+        <item name="colorPrimaryVariant">@color/black</item>
         <item name="colorOnPrimary">@color/black</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
+        <item name="colorSecondary">@color/color_primary_light</item>
         <item name="colorSecondaryVariant">@color/teal_200</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+
     </style>
 
     <style name="ShapeAppearanceOverlay.App.CornerSize10Percent" parent="">
@@ -19,9 +20,13 @@
     </style>
 
     <style name="Slider" parent="Widget.MaterialComponents.Slider">
-        <item name="colorPrimary">@color/design_default_color_primary</item>
+        <item name="colorPrimary">@color/color_primary_light</item>
         <item name="colorOnPrimary">@color/white</item>
-        <item name="colorOnSurface">@color/design_default_color_primary</item>
+        <item name="colorOnSurface">@color/color_primary_light</item>
+    </style>
+
+    <style name="ImageButton" parent="">
+        <item name="colorPrimary">@color/color_primary_light</item>
     </style>
 
 </resources>

@@ -4,8 +4,7 @@
 
     <item android:id="@+id/menuFavs"
         android:icon="@drawable/ic_baseline_favorite_24_white"
-        android:title="Favourites"
-        app:showAsAction="ifRoom" />
+        android:title="Favourites"/>
 
     <item android:id="@+id/settingsMenu"
         android:title="Settings" />
