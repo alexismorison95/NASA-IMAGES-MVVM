@@ -1,6 +1,7 @@
 package com.morris.nasaimages.modules.library.ui
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,7 +10,9 @@ import com.morris.nasaimages.core.BaseViewHolder
 import com.morris.nasaimages.databinding.LibraryCardBinding
 import com.morris.nasaimages.modules.apod.data.model.Apod
 import com.morris.nasaimages.modules.library.data.model.Item
+import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
+import java.lang.Exception
 
 class LibraryAdapter(
     private val context: Context,
@@ -44,6 +47,8 @@ class LibraryAdapter(
         notifyDataSetChanged()
     }
 
+    fun getList(): List<Item> = list
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<*> {
 
@@ -77,7 +82,16 @@ class LibraryAdapter(
             // Get Image
             Picasso.get()
                 .load(item.links[0].href)
-                .into(image)
+                .into(image, object : Callback {
+
+                    override fun onSuccess() {
+                        progressBar.visibility = View.GONE
+                    }
+
+                    override fun onError(e: Exception?) {
+                        progressBar.visibility = View.GONE
+                    }
+                })
 
             title.text = item.data[0].title
             date.text = item.data[0].dateCreated.split("T")[0]

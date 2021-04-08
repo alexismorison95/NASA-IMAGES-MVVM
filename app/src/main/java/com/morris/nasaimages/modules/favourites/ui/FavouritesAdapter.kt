@@ -10,7 +10,9 @@ import com.morris.nasaimages.core.BaseViewHolder
 import com.morris.nasaimages.modules.favourites.data.model.Favourite
 import com.morris.nasaimages.databinding.FavouriteCardBinding
 import com.morris.nasaimages.databinding.FavouriteCardMinBinding
+import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
+import java.lang.Exception
 
 class FavouritesAdapter(
     private val context: Context,
@@ -54,7 +56,16 @@ class FavouritesAdapter(
 
             Picasso.get()
                 .load(item.url)
-                .into(image)
+                .into(image, object : Callback {
+
+                    override fun onSuccess() {
+                        progressBar.visibility = View.GONE
+                    }
+
+                    override fun onError(e: Exception?) {
+                        progressBar.visibility = View.GONE
+                    }
+                })
 
             binding.root.setOnClickListener {
                 itemClickListener.onCardClick(item, binding.image)

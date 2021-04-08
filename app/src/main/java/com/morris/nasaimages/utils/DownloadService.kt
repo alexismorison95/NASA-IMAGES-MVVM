@@ -5,6 +5,7 @@ import android.content.Context
 import android.database.Cursor
 import android.net.Uri
 import android.os.Environment
+import android.util.Log
 import androidx.core.content.ContextCompat.getSystemService
 import com.morris.nasaimages.R
 import java.io.File
@@ -75,7 +76,7 @@ class DownloadService {
                             context,
                             NoficationService.DOWN_IMAGE_FAILED,
                             NoficationService.TRY_AGAIN,
-                            R.drawable.ic_baseline_favorite_24
+                            R.drawable.ic_baseline_file_download_off_24
                         )
                     }
                     DownloadManager.STATUS_SUCCESSFUL -> {
@@ -83,12 +84,13 @@ class DownloadService {
                         if (flag != WallpaperService.NOT_SET_WALLPAPER) {
 
                             WallpaperService.setWallpaper(context, directory, url, flag)
+
                         } else {
                             NoficationService.sendNotification(
                                 context,
                                 NoficationService.DOWN_IMAGE_SUCCESS,
                                 "The image is in the folder $directory",
-                                R.drawable.ic_baseline_favorite_24
+                                R.drawable.ic_baseline_file_download_done_24
                             )
                         }
                     }

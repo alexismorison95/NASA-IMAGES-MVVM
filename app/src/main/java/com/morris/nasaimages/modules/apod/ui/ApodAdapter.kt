@@ -8,7 +8,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.morris.nasaimages.core.BaseViewHolder
 import com.morris.nasaimages.modules.apod.data.model.Apod
 import com.morris.nasaimages.databinding.ApodCardBinding
+import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
+import java.lang.Exception
 
 class ApodAdapter(
     private val context: Context,
@@ -57,7 +59,16 @@ class ApodAdapter(
             // Get Image
             Picasso.get()
                 .load(item.url)
-                .into(image)
+                .into(image, object : Callback {
+
+                    override fun onSuccess() {
+                        progressBar.visibility = View.GONE
+                    }
+
+                    override fun onError(e: Exception?) {
+                        progressBar.visibility = View.GONE
+                    }
+                })
 
             title.text = item.title
             date.text = item.date

@@ -10,6 +10,7 @@ import android.view.View
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.morris.nasaimages.R
 import java.io.File
+import java.io.FileNotFoundException
 
 class WallpaperService {
 
@@ -54,6 +55,8 @@ class WallpaperService {
                         File.separator +
                         url.substring(url.lastIndexOf("/") + 1)
 
+                Log.d("filepath", "downloadImage: $filePath")
+
                 val bitmap = BitmapFactory.decodeFile(filePath)
 
                 when (flag) {
@@ -81,7 +84,7 @@ class WallpaperService {
                     context,
                     NoficationService.SET_WALLP_SUCCESS,
                     NoficationService.ENJOY_WALLP,
-                    R.drawable.ic_baseline_favorite_24
+                    R.drawable.ic_baseline_file_download_done_24
                 )
 
                 try {
@@ -99,14 +102,7 @@ class WallpaperService {
             }
             catch (e: Exception) {
 
-                NoficationService.sendNotification(
-                    context,
-                    NoficationService.SET_WALLP_FAILED,
-                    NoficationService.TRY_AGAIN,
-                    R.drawable.ic_baseline_favorite_24
-                )
-
-                Log.d("Wallpaper service", "setWallpaper: ${e.message}")
+                setWallpaper(context, directory, url, flag)
             }
         }
     }

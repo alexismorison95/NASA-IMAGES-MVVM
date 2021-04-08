@@ -77,6 +77,13 @@ class LibraryResultsFragment :
         page = 1
 
         libraryAdapter = LibraryAdapter(requireContext(), this, this)
+
+        viewModelLibrary.loadLibrary(
+            queryLibrary!!.queryText,
+            page.toString(),
+            queryLibrary!!.startYear,
+            queryLibrary!!.endYear
+        )
     }
 
 
@@ -90,13 +97,6 @@ class LibraryResultsFragment :
 
         setRecyclerView()
 
-        viewModelLibrary.loadLibrary(
-            queryLibrary!!.queryText,
-            page.toString(),
-            queryLibrary!!.startYear,
-            queryLibrary!!.endYear
-        )
-
         setObservers()
     }
 
@@ -104,8 +104,6 @@ class LibraryResultsFragment :
 
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.adapter = libraryAdapter
-
-        //libraryAdapter.setList(listOf())
     }
 
     private fun setObservers() {
@@ -119,7 +117,10 @@ class LibraryResultsFragment :
 
         viewModelLibrary.libraryData.observe(viewLifecycleOwner, {
 
-            libraryAdapter.updateList(it!!.collection.items)
+            if (it!!.collection.items != libraryAdapter.getList()) {
+
+                libraryAdapter.updateList(it.collection.items)
+            }
         })
 
         viewModelLibrary.onMessageError.observe(viewLifecycleOwner, {
